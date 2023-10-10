@@ -6,20 +6,20 @@ export enum TodoState {
 export type TodoDTO = {
     id: string;
     content: string;
-    status: TodoState;
+    state: TodoState;
     metaInformation: Record<string, string>;
 };
 
 export default abstract class Todo implements TodoDTO {
     id: string;
     content: string;
-    status: TodoState;
+    state: TodoState;
     metaInformation: Record<string, string>;
 
-    constructor({ id, content, status, metaInformation }: TodoDTO) {
+    constructor({ id, content, state, metaInformation }: TodoDTO) {
         this.id = id;
         this.content = content;
-        this.status = status;
+        this.state = state;
         this.metaInformation = metaInformation;
     }
 
@@ -27,7 +27,7 @@ export default abstract class Todo implements TodoDTO {
 
     abstract delete: () => Promise<void>;
 
-    abstract markDone: () => Promise<void>;
+    abstract markAsDone: () => Promise<Todo>;
 }
 
 export interface TodoFactory {
