@@ -8,9 +8,12 @@ type TodoNode = {
     data: { todo: Todo };
 };
 
-const todoContext = createContext<{ todos: Todo[]; nodes: TodoNode[] }>({
+type TodoContextState = { todos: Todo[]; nodes: TodoNode[]; deleteTodo: (todo: Todo) => void };
+
+const todoContext = createContext<TodoContextState>({
     todos: [],
     nodes: [],
+    deleteTodo: () => null
 });
 
 export default todoContext;
