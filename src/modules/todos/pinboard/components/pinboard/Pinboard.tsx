@@ -32,6 +32,11 @@ const Pinboard: FC = () => {
         node: Node<{ todo: Todo }>,
     ) => {
         const { todo } = node.data;
+
+        if (todo.metaData.position.x === node.position.x && todo.metaData.position.y === node.position.y) {
+            return;
+        }
+
         todo.metaData.position = { x: node.position.x, y: node.position.y };
         updateTodo(todo);
     };

@@ -1,0 +1,19 @@
+.node {
+    -webkit-box-shadow: 5px 5px 10px 0px rgba(199, 199, 199, 1);
+    -moz-box-shadow: 5px 5px 10px 0px rgba(199, 199, 199, 1);
+    box-shadow: 5px 5px 10px 0px rgba(199, 199, 199, 1);
+
+
+    padding: 24px 16px;
+    background: #FFF9C4;
+    position: relative;
+    height: 220px;
+    width: 200px;
+
+
+    .deleteIcon {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+    }
+}

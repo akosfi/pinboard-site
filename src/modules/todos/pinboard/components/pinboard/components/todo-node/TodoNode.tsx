@@ -1,6 +1,9 @@
-import Todo from 'modules/todos/domain/Todo';
+
 import useTodoContext from 'modules/todos/pinboard/context/useTodoContext';
 import { FC } from 'react';
+import { Todo } from 'modules/todos';
+
+import css from "./TodoNode.module.scss";
 
 type TodoNodeProps = {
     data: {
@@ -11,14 +14,10 @@ type TodoNodeProps = {
 const TodoNode: FC<TodoNodeProps> = ({ data }) => {
     const { deleteTodo } = useTodoContext();
     return (
-        <>
-            <div>
-                <label htmlFor="text">Text:</label>
-                <p>{data.todo.content}</p>
-                <input id="text" name="text" className="nodrag" />
-                <button onClick={() => deleteTodo(data.todo)}>Delete</button>
-            </div>
-        </>
+        <div className={css["node"]}>
+            <p>{data.todo.content}</p>
+            <span onClick={() => deleteTodo(data.todo)} className={css["deleteIcon"]}>X</span>
+        </div>
     );
 };
 
