@@ -17,7 +17,7 @@ export default class RemoteTodo extends Todo {
                 id: this.id,
                 content: this.content,
                 state: this.state,
-                metaData: this.metaInformation,
+                metaData: this.metaData,
             },
         );
 
@@ -37,7 +37,7 @@ export default class RemoteTodo extends Todo {
                 id: this.id,
                 content: this.content,
                 state: TodoState.FINISHED,
-                metaData: this.metaInformation,
+                metaData: this.metaData,
             },
         );
 

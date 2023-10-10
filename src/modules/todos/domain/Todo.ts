@@ -7,20 +7,24 @@ export type TodoDTO = {
     id: string;
     content: string;
     state: TodoState;
-    metaInformation: Record<string, string>;
+    metaData: {
+        position: { x: number; y: number };
+    };
 };
 
 export default abstract class Todo implements TodoDTO {
     id: string;
     content: string;
     state: TodoState;
-    metaInformation: Record<string, string>;
+    metaData: {
+        position: { x: number; y: number };
+    };
 
-    constructor({ id, content, state, metaInformation }: TodoDTO) {
+    constructor({ id, content, state, metaData }: TodoDTO) {
         this.id = id;
         this.content = content;
         this.state = state;
-        this.metaInformation = metaInformation;
+        this.metaData = metaData;
     }
 
     abstract save: () => Promise<Todo>;

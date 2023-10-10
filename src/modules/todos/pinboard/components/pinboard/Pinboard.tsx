@@ -1,10 +1,11 @@
-import React, { FC, useEffect, useMemo } from 'react';
+import React, { FC, useEffect, useMemo, MouseEvent } from 'react';
 import ReactFlow, {
     MiniMap,
     Controls,
     Background,
     BackgroundVariant,
     useNodesState,
+    Node,
 } from 'reactflow';
 
 //TODO: check bundle size. Maybe load dynamically.
@@ -14,16 +15,26 @@ import 'reactflow/dist/style.css';
 import TodoNode from './components/todo-node/TodoNode';
 import TodoContextProvider from '../../context/TodoContextProvider';
 import useTodoContext from '../../context/useTodoContext';
+import Todo from 'modules/todos/domain/Todo';
 
 const Pinboard: FC = () => {
     const [localNodeState, setLocalNodeState, onLocalNodeStateChange] =
         useNodesState([]);
 
-    const { nodes } = useTodoContext();
+    const { nodes, updateTodo } = useTodoContext();
 
     useEffect(() => {
         setLocalNodeState(nodes);
     }, [nodes, setLocalNodeState]);
+
+    const handleNodeDragStop = (
+        _event: MouseEvent,
+        node: Node<{ todo: Todo }>,
+    ) => {
+        const { todo } = node.data;
+        todo.metaData.position = { x: node.position.x, y: node.position.y };
+        updateTodo(todo);
+    };
 
     const nodeTypes = useMemo(() => ({ todoNode: TodoNode }), []);
 
@@ -32,6 +43,7 @@ const Pinboard: FC = () => {
             <ReactFlow
                 nodes={localNodeState}
                 onNodesChange={onLocalNodeStateChange}
+                onNodeDragStop={handleNodeDragStop}
                 nodeTypes={nodeTypes}
             >
                 <Controls />
@@ -51,5 +63,7 @@ const PinboardWithContext = () => (
         <Pinboard />
     </TodoContextProvider>
 );
+
+//TODO: memoize?
 
 export default PinboardWithContext;
