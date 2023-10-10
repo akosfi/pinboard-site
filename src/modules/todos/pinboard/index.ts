@@ -1,1 +1,1 @@
-export { default as GetAllTodosUseCase } from './useCases/GetAllTodosUseCase';
+export { default as Pinboard } from './components/pinboard/Pinboard';

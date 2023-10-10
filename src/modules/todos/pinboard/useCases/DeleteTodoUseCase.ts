@@ -7,7 +7,7 @@ interface DeleteTodoUseCaseRequest {
 export default class DeleteTodoUseCase {
     constructor(
         private readonly deleteTodoUseCaseRequest: DeleteTodoUseCaseRequest,
-    ) { }
+    ) {}
 
     execute = async (): Promise<void> => {
         const { todo } = this.deleteTodoUseCaseRequest;

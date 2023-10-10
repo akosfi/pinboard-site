@@ -1,4 +1,4 @@
-import axios, { type AxiosInstance, type AxiosResponse } from 'axios';
+import { type AxiosInstance, type AxiosResponse } from 'axios';
 import TodoRepository from '../domain/TodoRepository';
 import { TodoDTO } from '../domain/Todo';
 import { RemoteTodoFactory } from './RemoteTodo';
@@ -7,7 +7,6 @@ export default class RemoteTodoRepository extends TodoRepository {
     constructor(private readonly axiosInstance: AxiosInstance) {
         super();
     }
-
 
     getAll = async () => {
         const {

@@ -11,13 +11,13 @@ interface MarkTodoAsDoneUseCaseResponse {
 export default class MarkTodoAsDoneUseCase {
     constructor(
         private readonly markTodoAsDoneUseCaseRequest: MarkTodoAsDoneUseCaseRequest,
-    ) { }
+    ) {}
 
     execute = async (): Promise<MarkTodoAsDoneUseCaseResponse> => {
         const { todo } = this.markTodoAsDoneUseCaseRequest;
 
         const todoMarkedAsDone = await todo.markAsDone();
 
-        return { todo: todoMarkedAsDone }
+        return { todo: todoMarkedAsDone };
     };
 }

@@ -54,11 +54,11 @@ export default class RemoteTodo extends Todo {
         const todo = content.find(({ id }) => id === this.id);
 
         if (!todo) {
-            throw new Error("Todo not found!");
+            throw new Error('Todo not found!');
         }
 
         return new RemoteTodoFactory().from(todo);
-    }
+    };
 }
 
 export class RemoteTodoFactory implements TodoFactory {
