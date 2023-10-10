@@ -33,7 +33,10 @@ const Pinboard: FC = () => {
     ) => {
         const { todo } = node.data;
 
-        if (todo.metaData.position.x === node.position.x && todo.metaData.position.y === node.position.y) {
+        if (
+            todo.metaData.position.x === node.position.x &&
+            todo.metaData.position.y === node.position.y
+        ) {
             return;
         }
 

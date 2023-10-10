@@ -3,17 +3,30 @@
     -moz-box-shadow: 5px 5px 10px 0px rgba(199, 199, 199, 1);
     box-shadow: 5px 5px 10px 0px rgba(199, 199, 199, 1);
 
-
     padding: 24px 16px;
-    background: #FFF9C4;
+    background: #fff9c4;
     position: relative;
     height: 220px;
     width: 200px;
+    font-size: 16px;
 
-
-    .deleteIcon {
+    .actions {
         position: absolute;
         top: 8px;
         right: 8px;
+    }
+
+    .editingArea {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        gap: 4px;
+
+        textarea {
+            height: 100%;
+            background: #fff9c4;
+            font-size: 16px;
+        }
+
     }
 }
