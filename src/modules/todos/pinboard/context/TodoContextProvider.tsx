@@ -23,6 +23,7 @@ type TodoContextProviderProps = {
 const TodoContextProvider: FC<TodoContextProviderProps> = ({ children }) => {
     const [todos, setTodos] = useState<Todo[]>([]);
     const [errors, setErrors] = useState<string[]>([]);
+    const [userActionIsInProgress, setUserActionIsInProgress] = useState(false);
 
     const refreshTodoInList = useCallback(
         (todo: Todo) => {
@@ -46,28 +47,47 @@ const TodoContextProvider: FC<TodoContextProviderProps> = ({ children }) => {
         [setErrors, errors],
     );
 
-    useEffect(() => {
-        (async () => {
-            try {
-                const { todos } = await new GetAllTodosUseCase({
-                    todoRepository: new RemoteTodoRepository(axiosInstance),
-                }).execute();
-                setTodos(todos);
-            } catch (error) {
-                addError('Failed to load todos.');
-            }
-        })();
+    const loadAllTodos = useCallback(async () => {
+        try {
+            const { todos } = await new GetAllTodosUseCase({
+                todoRepository: new RemoteTodoRepository(axiosInstance),
+            }).execute();
+            setTodos(todos);
+        } catch (error) {
+            addError('Failed to load todos.');
+        }
     }, [setTodos, addError]);
+
+    useEffect(() => {
+        loadAllTodos();
+    }, [loadAllTodos])
+
+    useEffect(() => {
+        let interval: NodeJS.Timeout | null = null;
+
+        if (!userActionIsInProgress) {
+            interval = setInterval(loadAllTodos, 5000);
+        }
+
+        return () => {
+            if (interval !== null) {
+                clearInterval(interval);
+            }
+        }
+    }, [userActionIsInProgress]);
 
     const deleteTodo = useCallback(
         async (todoToDelete: Todo) => {
             try {
+                setUserActionIsInProgress(true);
                 await new DeleteTodoUseCase({
                     todo: todoToDelete,
                 }).execute();
                 setTodos(todos.filter((todo) => todo.id !== todoToDelete.id));
             } catch (error) {
                 addError('Failed to delete todo.');
+            } finally {
+                setUserActionIsInProgress(false)
             }
         },
         [todos, setTodos, addError],
@@ -76,12 +96,15 @@ const TodoContextProvider: FC<TodoContextProviderProps> = ({ children }) => {
     const updateTodo = useCallback(
         async (todoToUpdate: Todo) => {
             try {
+                setUserActionIsInProgress(true)
                 const { todo } = await new UpdateTodoUseCase({
                     todo: todoToUpdate,
                 }).execute();
                 refreshTodoInList(todo);
             } catch (error) {
                 addError('Failed to update todo.');
+            } finally {
+                setUserActionIsInProgress(false)
             }
         },
         [refreshTodoInList, addError],
@@ -90,6 +113,7 @@ const TodoContextProvider: FC<TodoContextProviderProps> = ({ children }) => {
     const createTodo = useCallback(
         async (newTodoContent: string) => {
             try {
+                setUserActionIsInProgress(true)
                 const { todos } = await new CreateTodoUseCase({
                     todoRepository: new RemoteTodoRepository(axiosInstance),
                     newTodoContent,
@@ -97,6 +121,8 @@ const TodoContextProvider: FC<TodoContextProviderProps> = ({ children }) => {
                 setTodos(todos);
             } catch (error) {
                 addError('Failed to create todo.');
+            } finally {
+                setUserActionIsInProgress(false)
             }
         },
         [setTodos, addError],
@@ -105,6 +131,7 @@ const TodoContextProvider: FC<TodoContextProviderProps> = ({ children }) => {
     const markTodoAsDone = useCallback(
         async (todo: Todo) => {
             try {
+                setUserActionIsInProgress(true)
                 const { todo: todoMarkedAsDone } =
                     await new MarkTodoAsDoneUseCase({
                         todo,
@@ -113,6 +140,8 @@ const TodoContextProvider: FC<TodoContextProviderProps> = ({ children }) => {
                 refreshTodoInList(todoMarkedAsDone);
             } catch (error) {
                 addError('Failed to mark todo as done.');
+            } finally {
+                setUserActionIsInProgress(false)
             }
         },
         [refreshTodoInList, addError],
