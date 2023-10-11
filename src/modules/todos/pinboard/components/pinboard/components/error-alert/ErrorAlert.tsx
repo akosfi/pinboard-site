@@ -15,21 +15,18 @@ const ErrorAlert: FC = () => {
             return;
         }
 
-        console.log(errors);
-
-
         const errorToShow = errors[0];
-        dispatch(pinboardSliceActions.setErrors({ errors: errors.slice(1) }))
+        dispatch(pinboardSliceActions.setErrors({ errors: errors.slice(1) }));
+
         if (!errorToShow) {
             return;
         }
 
         setErrorBeingShown(errorToShow);
-
         setTimeout(() => {
             setErrorBeingShown(null);
         }, 3000);
-    }, [errors, errorBeingShown]);
+    }, [errors, errorBeingShown, dispatch]);
 
     if (!errorBeingShown) {
         return null;

@@ -1,7 +1,6 @@
 import { Todo, TodoDTO } from 'modules/todos';
 import MarkTodoAsDoneUseCase from '../../useCases/MarkTodoAsDoneUseCase';
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { RemoteTodoFactory } from 'modules/todos/remote/RemoteTodo';
 
 const markTodoAsDoneThunk = createAsyncThunk<
     { todo: TodoDTO },

@@ -1,4 +1,11 @@
-import { FC, KeyboardEventHandler, ReactElement, useEffect, useMemo, useState } from 'react';
+import {
+    FC,
+    KeyboardEventHandler,
+    ReactElement,
+    useEffect,
+    useMemo,
+    useState,
+} from 'react';
 import classNames from 'classnames';
 import { Todo } from 'modules/todos';
 
@@ -33,12 +40,13 @@ const TodoNode: FC<TodoNodeProps> = ({ data: { todo } }) => {
         }
     }, [todo, isEditingActive, setIsEditingActive]);
 
-
-    const handleKeyDownOnInput = (...args: Parameters<KeyboardEventHandler<HTMLTextAreaElement>>) => {
-        if (args[0].key === "Enter") {
+    const handleKeyDownOnInput = (
+        ...args: Parameters<KeyboardEventHandler<HTMLTextAreaElement>>
+    ) => {
+        if (args[0].key === 'Enter') {
             submitEditing();
         }
-    }
+    };
 
     const submitEditing = () => {
         const todoToUpdate = new RemoteTodoFactory().from({
@@ -48,7 +56,6 @@ const TodoNode: FC<TodoNodeProps> = ({ data: { todo } }) => {
         dispatch(updateTodoThunk({ todo: todoToUpdate }));
         setIsEditingActive(false);
     };
-
 
     const actionsFragment = useMemo(() => {
         const editButton = (
