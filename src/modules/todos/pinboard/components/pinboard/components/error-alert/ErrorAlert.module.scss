@@ -1,28 +1,18 @@
-.overlay {
+.alert {
     position: absolute;
-    top: 16px;
+    bottom: 16px;
     left: 50%;
     transform: translateX(-50%);
     z-index: 1;
-    background: #fefefe;
+    background: #ff6f6f;
     border-bottom: 1px solid #eee;
     box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.08);
-    display: inline-flex;
     padding: 8px 16px;
     gap: 8px;
     border-radius: 4px;
 
-    .textInput,
-    .submit {
+    .text {
         font-size: 18px;
-        border: 2px solid #e5e5e5;
         padding: 4px 8px;
-        border-radius: 4px;
-
-        background: #fefefe;
-    }
-
-    .textInput {
-        width: 340px;
     }
 }

@@ -15,6 +15,7 @@ import TodoContextProvider from '../../context/TodoContextProvider';
 import useTodoContext from '../../context/useTodoContext';
 import Todo from 'modules/todos/domain/Todo';
 import CreateTodoInput from './components/create-todo-input/CreateTodoInput';
+import ErrorAlert from './components/error-alert/ErrorAlert';
 import 'reactflow/dist/style.css';
 import css from './Pinboard.module.scss';
 
@@ -50,6 +51,7 @@ const Pinboard: FC = () => {
     return (
         <div className={css['container']}>
             <CreateTodoInput />
+            <ErrorAlert />
             <ReactFlow
                 nodes={localNodeState}
                 onNodesChange={onLocalNodeStateChange}
@@ -75,7 +77,5 @@ const PinboardWithContext = () => (
         <MemoizedPinboard />
     </TodoContextProvider>
 );
-
-//TODO: memoize?
 
 export default PinboardWithContext;

@@ -22,6 +22,7 @@ type TodoContextProviderProps = {
 
 const TodoContextProvider: FC<TodoContextProviderProps> = ({ children }) => {
     const [todos, setTodos] = useState<Todo[]>([]);
+    const [errors, setErrors] = useState<string[]>([]);
 
     useEffect(() => {
         (async () => {
@@ -51,6 +52,11 @@ const TodoContextProvider: FC<TodoContextProviderProps> = ({ children }) => {
         [todos, setTodos],
     );
 
+
+    const addError = useCallback((error: string) => {
+        setErrors([...errors, error]);
+    }, [setErrors, errors]);
+
     const deleteTodo = useCallback(
         async (todoToDelete: Todo) => {
             try {
@@ -59,7 +65,7 @@ const TodoContextProvider: FC<TodoContextProviderProps> = ({ children }) => {
                 }).execute();
                 setTodos(todos.filter((todo) => todo.id !== todoToDelete.id));
             } catch (error) {
-                //TODO: handle this
+                addError("Failed to delete todo.")
             }
         },
         [todos, setTodos],
@@ -73,7 +79,7 @@ const TodoContextProvider: FC<TodoContextProviderProps> = ({ children }) => {
                 }).execute();
                 refreshTodoInList(todo);
             } catch (error) {
-                //TODO: handle this
+                addError("Failed to update todo.")
             }
         },
         [refreshTodoInList],
@@ -88,7 +94,7 @@ const TodoContextProvider: FC<TodoContextProviderProps> = ({ children }) => {
                 }).execute();
                 setTodos(todos);
             } catch (error) {
-                //TODO: handle this
+                addError("Failed to create todo.")
             }
         },
         [setTodos],
@@ -104,7 +110,7 @@ const TodoContextProvider: FC<TodoContextProviderProps> = ({ children }) => {
 
                 refreshTodoInList(todoMarkedAsDone);
             } catch (error) {
-                //TODO: handle this
+                addError("Failed to mark todo as done.")
             }
         },
         [refreshTodoInList],
@@ -133,6 +139,7 @@ const TodoContextProvider: FC<TodoContextProviderProps> = ({ children }) => {
                 updateTodo,
                 createTodo,
                 markTodoAsDone,
+                errors
             }}
         >
             {children}
