@@ -33,7 +33,7 @@ const TodoNode: FC<TodoNodeProps> = ({ data }) => {
             {!isEditingActive ? (
                 <p>{data.todo.content}</p>
             ) : (
-                <div className={css["editingArea"]}>
+                <div className={css['editingArea']}>
                     <textarea
                         onChange={(e) => setDraftContent(e.target.value)}
                         value={draftContent}
@@ -42,7 +42,9 @@ const TodoNode: FC<TodoNodeProps> = ({ data }) => {
                 </div>
             )}
             <div className={css['actions']}>
-                <span onClick={() => setIsEditingActive(!isEditingActive)}>E</span>
+                <span onClick={() => setIsEditingActive(!isEditingActive)}>
+                    E
+                </span>
                 <span onClick={() => deleteTodo(data.todo)}>X</span>
             </div>
         </div>

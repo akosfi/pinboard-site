@@ -17,4 +17,16 @@ export default class RemoteTodoRepository extends TodoRepository {
 
         return content.map(new RemoteTodoFactory().from);
     };
+
+    create = async (content: string) => {
+        await this.axiosInstance.post(
+            `${process.env.NEXT_PUBLIC_SERVER_URL}/todos`,
+            {
+                content,
+                metaData: {
+                    position: { x: 0, y: 0 },
+                },
+            },
+        );
+    };
 }

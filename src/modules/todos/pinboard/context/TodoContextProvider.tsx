@@ -13,6 +13,7 @@ import axiosInstance from 'remote/axiosInstance';
 import GetAllTodosUseCase from '../useCases/GetAllTodosUseCase';
 import DeleteTodoUseCase from '../useCases/DeleteTodoUseCase';
 import UpdateTodoUseCase from '../useCases/UpdateTodoUseCase';
+import CreateTodoUseCase from '../useCases/CreateTodoUseCase';
 
 type TodoContextProviderProps = {
     children: ReactElement | ReactElement[];
@@ -69,6 +70,21 @@ const TodoContextProvider: FC<TodoContextProviderProps> = ({ children }) => {
         [todos, setTodos],
     );
 
+    const createTodo = useCallback(
+        async (newTodoContent: string) => {
+            try {
+                const { todos } = await new CreateTodoUseCase({
+                    todoRepository: new RemoteTodoRepository(axiosInstance),
+                    newTodoContent,
+                }).execute();
+                setTodos(todos);
+            } catch (error) {
+                //TODO: handle this
+            }
+        },
+        [setTodos],
+    );
+
     const nodes = useMemo(
         () =>
             todos.map((todo) => ({
@@ -84,7 +100,9 @@ const TodoContextProvider: FC<TodoContextProviderProps> = ({ children }) => {
     );
 
     return (
-        <todoContext.Provider value={{ todos, nodes, deleteTodo, updateTodo }}>
+        <todoContext.Provider
+            value={{ todos, nodes, deleteTodo, updateTodo, createTodo }}
+        >
             {children}
         </todoContext.Provider>
     );

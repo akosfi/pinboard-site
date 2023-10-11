@@ -10,12 +10,13 @@ import ReactFlow, {
 
 //TODO: check bundle size. Maybe load dynamically.
 
-import 'reactflow/dist/style.css';
-
 import TodoNode from './components/todo-node/TodoNode';
 import TodoContextProvider from '../../context/TodoContextProvider';
 import useTodoContext from '../../context/useTodoContext';
 import Todo from 'modules/todos/domain/Todo';
+import CreateTodoInput from './components/create-todo-input/CreateTodoInput';
+import 'reactflow/dist/style.css';
+import css from './Pinboard.module.scss';
 
 const Pinboard: FC = () => {
     const [localNodeState, setLocalNodeState, onLocalNodeStateChange] =
@@ -47,7 +48,8 @@ const Pinboard: FC = () => {
     const nodeTypes = useMemo(() => ({ todoNode: TodoNode }), []);
 
     return (
-        <div style={{ width: '100vw', height: '100vh' }}>
+        <div className={css['container']}>
+            <CreateTodoInput />
             <ReactFlow
                 nodes={localNodeState}
                 onNodesChange={onLocalNodeStateChange}
