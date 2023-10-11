@@ -8,8 +8,6 @@ import ReactFlow, {
     Node,
 } from 'reactflow';
 
-//TODO: check bundle size. Maybe load dynamically.
-
 import TodoNode from './components/todo-node/TodoNode';
 import TodoContextProvider from '../../context/TodoContextProvider';
 import useTodoContext from '../../context/useTodoContext';

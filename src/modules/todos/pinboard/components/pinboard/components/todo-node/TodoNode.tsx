@@ -42,7 +42,6 @@ const TodoNode: FC<TodoNodeProps> = ({ data: { todo } }) => {
             />
         );
 
-        //TODO: check mark as done functionaly. Bug updateing todo.
         const markAsDoneButton = (
             <img
                 src="/assets/check_icon.svg"

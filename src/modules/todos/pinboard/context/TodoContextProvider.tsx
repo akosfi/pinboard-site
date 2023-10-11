@@ -24,18 +24,6 @@ const TodoContextProvider: FC<TodoContextProviderProps> = ({ children }) => {
     const [todos, setTodos] = useState<Todo[]>([]);
     const [errors, setErrors] = useState<string[]>([]);
 
-    useEffect(() => {
-        (async () => {
-            try {
-                const { todos } = await new GetAllTodosUseCase({
-                    todoRepository: new RemoteTodoRepository(axiosInstance),
-                }).execute();
-                setTodos(todos);
-            } catch (error) {
-                //TODO: handle this
-            }
-        })();
-    }, [setTodos]);
 
     const refreshTodoInList = useCallback(
         (todo: Todo) => {
@@ -56,6 +44,20 @@ const TodoContextProvider: FC<TodoContextProviderProps> = ({ children }) => {
     const addError = useCallback((error: string) => {
         setErrors([...errors, error]);
     }, [setErrors, errors]);
+
+
+    useEffect(() => {
+        (async () => {
+            try {
+                const { todos } = await new GetAllTodosUseCase({
+                    todoRepository: new RemoteTodoRepository(axiosInstance),
+                }).execute();
+                setTodos(todos);
+            } catch (error) {
+                addError("Failed to load todos.")
+            }
+        })();
+    }, [setTodos]);
 
     const deleteTodo = useCallback(
         async (todoToDelete: Todo) => {
