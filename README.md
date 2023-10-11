@@ -26,16 +26,30 @@ cd pinboard-site
 npm i
 ```
 
+4. Running the application
+
+Make sure the following environment variable is always set for correct functionality.
+
+```bash
+# Base URL of the backend. It should be specified in .env during build in order to have a working build.
+NEXT_PUBLIC_SERVER_BASE_URL=http://localhost:8080
+```
+
 4/A. Start the development server:
 
 ```bash
 npm run dev
 ```
 
-4/B. Start the production server:
+4/B. Create the production build:
 
 ```bash
 npm run build
+```
+
+Use any HTTP server to serve the built static content or run the following command:
+
+```bash
 npm run start
 ```
 

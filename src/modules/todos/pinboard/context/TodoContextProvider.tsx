@@ -60,7 +60,7 @@ const TodoContextProvider: FC<TodoContextProviderProps> = ({ children }) => {
 
     useEffect(() => {
         loadAllTodos();
-    }, [loadAllTodos])
+    }, [loadAllTodos]);
 
     useEffect(() => {
         let interval: NodeJS.Timeout | null = null;
@@ -73,8 +73,8 @@ const TodoContextProvider: FC<TodoContextProviderProps> = ({ children }) => {
             if (interval !== null) {
                 clearInterval(interval);
             }
-        }
-    }, [userActionIsInProgress]);
+        };
+    }, [userActionIsInProgress, loadAllTodos]);
 
     const deleteTodo = useCallback(
         async (todoToDelete: Todo) => {
@@ -87,7 +87,7 @@ const TodoContextProvider: FC<TodoContextProviderProps> = ({ children }) => {
             } catch (error) {
                 addError('Failed to delete todo.');
             } finally {
-                setUserActionIsInProgress(false)
+                setUserActionIsInProgress(false);
             }
         },
         [todos, setTodos, addError],
@@ -96,7 +96,7 @@ const TodoContextProvider: FC<TodoContextProviderProps> = ({ children }) => {
     const updateTodo = useCallback(
         async (todoToUpdate: Todo) => {
             try {
-                setUserActionIsInProgress(true)
+                setUserActionIsInProgress(true);
                 const { todo } = await new UpdateTodoUseCase({
                     todo: todoToUpdate,
                 }).execute();
@@ -104,7 +104,7 @@ const TodoContextProvider: FC<TodoContextProviderProps> = ({ children }) => {
             } catch (error) {
                 addError('Failed to update todo.');
             } finally {
-                setUserActionIsInProgress(false)
+                setUserActionIsInProgress(false);
             }
         },
         [refreshTodoInList, addError],
@@ -113,7 +113,7 @@ const TodoContextProvider: FC<TodoContextProviderProps> = ({ children }) => {
     const createTodo = useCallback(
         async (newTodoContent: string) => {
             try {
-                setUserActionIsInProgress(true)
+                setUserActionIsInProgress(true);
                 const { todos } = await new CreateTodoUseCase({
                     todoRepository: new RemoteTodoRepository(axiosInstance),
                     newTodoContent,
@@ -122,7 +122,7 @@ const TodoContextProvider: FC<TodoContextProviderProps> = ({ children }) => {
             } catch (error) {
                 addError('Failed to create todo.');
             } finally {
-                setUserActionIsInProgress(false)
+                setUserActionIsInProgress(false);
             }
         },
         [setTodos, addError],
@@ -131,7 +131,7 @@ const TodoContextProvider: FC<TodoContextProviderProps> = ({ children }) => {
     const markTodoAsDone = useCallback(
         async (todo: Todo) => {
             try {
-                setUserActionIsInProgress(true)
+                setUserActionIsInProgress(true);
                 const { todo: todoMarkedAsDone } =
                     await new MarkTodoAsDoneUseCase({
                         todo,
@@ -141,7 +141,7 @@ const TodoContextProvider: FC<TodoContextProviderProps> = ({ children }) => {
             } catch (error) {
                 addError('Failed to mark todo as done.');
             } finally {
-                setUserActionIsInProgress(false)
+                setUserActionIsInProgress(false);
             }
         },
         [refreshTodoInList, addError],
