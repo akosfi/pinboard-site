@@ -105,7 +105,7 @@ const TodoContextProvider: FC<TodoContextProviderProps> = ({ children }) => {
                 //TODO: handle this
             }
         },
-        [setTodos],
+        [setTodos, todos],
     );
 
     const nodes = useMemo(

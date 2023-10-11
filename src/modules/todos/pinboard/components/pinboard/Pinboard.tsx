@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useMemo, MouseEvent } from 'react';
+import React, { FC, useEffect, useMemo, MouseEvent, memo } from 'react';
 import ReactFlow, {
     MiniMap,
     Controls,
@@ -68,9 +68,12 @@ const Pinboard: FC = () => {
     );
 };
 
+
+const MemoizedPinboard = memo(Pinboard);
+
 const PinboardWithContext = () => (
     <TodoContextProvider>
-        <Pinboard />
+        <MemoizedPinboard />
     </TodoContextProvider>
 );
 
