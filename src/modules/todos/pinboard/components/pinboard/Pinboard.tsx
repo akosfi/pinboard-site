@@ -16,6 +16,7 @@ import CreateTodoInput from './components/create-todo-input/CreateTodoInput';
 import ErrorAlert from './components/error-alert/ErrorAlert';
 import 'reactflow/dist/style.css';
 import css from './Pinboard.module.scss';
+import { RemoteTodoFactory } from 'modules/todos/remote/RemoteTodo';
 
 const Pinboard: FC = () => {
     const [localNodeState, setLocalNodeState, onLocalNodeStateChange] =
@@ -40,8 +41,14 @@ const Pinboard: FC = () => {
             return;
         }
 
-        todo.metaData.position = { x: node.position.x, y: node.position.y };
-        updateTodo(todo);
+        const todoToUpdate = new RemoteTodoFactory().from({
+            ...todo.serialize(),
+            metaData: {
+                ...todo.metaData,
+                position: { x: node.position.x, y: node.position.y },
+            },
+        });
+        updateTodo(todoToUpdate);
     };
 
     const nodeTypes = useMemo(() => ({ todoNode: TodoNode }), []);

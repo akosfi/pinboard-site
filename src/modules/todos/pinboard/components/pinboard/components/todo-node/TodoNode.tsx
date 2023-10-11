@@ -4,6 +4,7 @@ import { Todo } from 'modules/todos';
 import useTodoContext from 'modules/todos/pinboard/context/useTodoContext';
 
 import css from './TodoNode.module.scss';
+import { RemoteTodoFactory } from 'modules/todos/remote/RemoteTodo';
 
 type TodoNodeProps = {
     data: {
@@ -23,8 +24,11 @@ const TodoNode: FC<TodoNodeProps> = ({ data: { todo } }) => {
     }, [isEditingActive, todo, setDraftContent]);
 
     const handleConfirmationClick = () => {
-        todo.content = draftContent;
-        updateTodo(todo);
+        const todoToUpdate = new RemoteTodoFactory().from({
+            ...todo.serialize(),
+            content: draftContent,
+        });
+        updateTodo(todoToUpdate);
         setIsEditingActive(false);
     };
 

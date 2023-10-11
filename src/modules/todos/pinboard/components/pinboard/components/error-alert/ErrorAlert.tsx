@@ -31,7 +31,7 @@ const ErrorAlert: FC = () => {
 
     return (
         <div className={css['alert']}>
-            <p className={css["text"]}>{errorBeingShown}</p>
+            <p className={css['text']}>{errorBeingShown}</p>
         </div>
     );
 };

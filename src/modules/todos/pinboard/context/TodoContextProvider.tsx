@@ -24,7 +24,6 @@ const TodoContextProvider: FC<TodoContextProviderProps> = ({ children }) => {
     const [todos, setTodos] = useState<Todo[]>([]);
     const [errors, setErrors] = useState<string[]>([]);
 
-
     const refreshTodoInList = useCallback(
         (todo: Todo) => {
             const todoToRefreshIndex = todos.findIndex(
@@ -40,11 +39,12 @@ const TodoContextProvider: FC<TodoContextProviderProps> = ({ children }) => {
         [todos, setTodos],
     );
 
-
-    const addError = useCallback((error: string) => {
-        setErrors([...errors, error]);
-    }, [setErrors, errors]);
-
+    const addError = useCallback(
+        (error: string) => {
+            setErrors([...errors, error]);
+        },
+        [setErrors, errors],
+    );
 
     useEffect(() => {
         (async () => {
@@ -54,10 +54,10 @@ const TodoContextProvider: FC<TodoContextProviderProps> = ({ children }) => {
                 }).execute();
                 setTodos(todos);
             } catch (error) {
-                addError("Failed to load todos.")
+                addError('Failed to load todos.');
             }
         })();
-    }, [setTodos]);
+    }, [setTodos, addError]);
 
     const deleteTodo = useCallback(
         async (todoToDelete: Todo) => {
@@ -67,10 +67,10 @@ const TodoContextProvider: FC<TodoContextProviderProps> = ({ children }) => {
                 }).execute();
                 setTodos(todos.filter((todo) => todo.id !== todoToDelete.id));
             } catch (error) {
-                addError("Failed to delete todo.")
+                addError('Failed to delete todo.');
             }
         },
-        [todos, setTodos],
+        [todos, setTodos, addError],
     );
 
     const updateTodo = useCallback(
@@ -81,10 +81,10 @@ const TodoContextProvider: FC<TodoContextProviderProps> = ({ children }) => {
                 }).execute();
                 refreshTodoInList(todo);
             } catch (error) {
-                addError("Failed to update todo.")
+                addError('Failed to update todo.');
             }
         },
-        [refreshTodoInList],
+        [refreshTodoInList, addError],
     );
 
     const createTodo = useCallback(
@@ -96,10 +96,10 @@ const TodoContextProvider: FC<TodoContextProviderProps> = ({ children }) => {
                 }).execute();
                 setTodos(todos);
             } catch (error) {
-                addError("Failed to create todo.")
+                addError('Failed to create todo.');
             }
         },
-        [setTodos],
+        [setTodos, addError],
     );
 
     const markTodoAsDone = useCallback(
@@ -112,10 +112,10 @@ const TodoContextProvider: FC<TodoContextProviderProps> = ({ children }) => {
 
                 refreshTodoInList(todoMarkedAsDone);
             } catch (error) {
-                addError("Failed to mark todo as done.")
+                addError('Failed to mark todo as done.');
             }
         },
-        [refreshTodoInList],
+        [refreshTodoInList, addError],
     );
 
     const nodes = useMemo(
@@ -141,7 +141,7 @@ const TodoContextProvider: FC<TodoContextProviderProps> = ({ children }) => {
                 updateTodo,
                 createTodo,
                 markTodoAsDone,
-                errors
+                errors,
             }}
         >
             {children}

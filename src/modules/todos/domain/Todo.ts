@@ -34,6 +34,13 @@ export default abstract class Todo implements TodoDTO {
     abstract markAsDone: () => Promise<Todo>;
 
     isDone = () => this.state === TodoState.FINISHED;
+
+    serialize = (): TodoDTO => ({
+        id: this.id,
+        content: this.content,
+        state: this.state,
+        metaData: this.metaData,
+    });
 }
 
 export interface TodoFactory {
