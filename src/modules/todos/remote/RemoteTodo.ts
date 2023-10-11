@@ -11,35 +11,27 @@ export default class RemoteTodo extends Todo {
     }
 
     save = async () => {
-        await this.axiosInstance.put(
-            `${process.env.NEXT_PUBLIC_SERVER_URL}/todos`,
-            {
-                id: this.id,
-                content: this.content,
-                state: this.state,
-                metaData: this.metaData,
-            },
-        );
+        await this.axiosInstance.put('/todos', {
+            id: this.id,
+            content: this.content,
+            state: this.state,
+            metaData: this.metaData,
+        });
 
         return await this.fetch();
     };
 
     delete = async () => {
-        await this.axiosInstance.delete(
-            `${process.env.NEXT_PUBLIC_SERVER_URL}/todos/${this.id}`,
-        );
+        await this.axiosInstance.delete(`/todos/${this.id}`);
     };
 
     markAsDone = async () => {
-        await this.axiosInstance.put(
-            `${process.env.NEXT_PUBLIC_SERVER_URL}/todos`,
-            {
-                id: this.id,
-                content: this.content,
-                state: TodoState.FINISHED,
-                metaData: this.metaData,
-            },
-        );
+        await this.axiosInstance.put('/todos', {
+            id: this.id,
+            content: this.content,
+            state: TodoState.FINISHED,
+            metaData: this.metaData,
+        });
 
         return await this.fetch();
     };
@@ -47,9 +39,8 @@ export default class RemoteTodo extends Todo {
     private fetch = async () => {
         const {
             data: { content },
-        }: AxiosResponse<{ content: TodoDTO[] }> = await this.axiosInstance.get(
-            `${process.env.NEXT_PUBLIC_SERVER_URL}/todos`,
-        );
+        }: AxiosResponse<{ content: TodoDTO[] }> =
+            await this.axiosInstance.get('/todos');
 
         const todo = content.find(({ id }) => id === this.id);
 
