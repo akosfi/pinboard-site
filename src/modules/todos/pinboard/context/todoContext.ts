@@ -14,6 +14,7 @@ type TodoContextState = {
     deleteTodo: (todo: Todo) => void;
     updateTodo: (todo: Todo) => void;
     createTodo: (newTodoContent: string) => void;
+    markTodoAsDone: (todo: Todo) => void;
 };
 
 const todoContext = createContext<TodoContextState>({
@@ -22,6 +23,7 @@ const todoContext = createContext<TodoContextState>({
     deleteTodo: () => null,
     updateTodo: () => null,
     createTodo: () => null,
+    markTodoAsDone: (todo: Todo) => null,
 });
 
 export default todoContext;

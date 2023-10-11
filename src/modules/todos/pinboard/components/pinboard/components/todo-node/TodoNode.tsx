@@ -1,6 +1,7 @@
-import useTodoContext from 'modules/todos/pinboard/context/useTodoContext';
-import { FC, useEffect, useState } from 'react';
+import { FC, ReactElement, useEffect, useMemo, useState } from 'react';
+import classNames from 'classnames';
 import { Todo } from 'modules/todos';
+import useTodoContext from 'modules/todos/pinboard/context/useTodoContext';
 
 import css from './TodoNode.module.scss';
 
@@ -10,43 +11,70 @@ type TodoNodeProps = {
     };
 };
 
-const TodoNode: FC<TodoNodeProps> = ({ data }) => {
-    const { deleteTodo, updateTodo } = useTodoContext();
-    const [draftContent, setDraftContent] = useState(data.todo.content);
+const TodoNode: FC<TodoNodeProps> = ({ data: { todo } }) => {
+    const { deleteTodo, updateTodo, markTodoAsDone } = useTodoContext();
+    const [draftContent, setDraftContent] = useState(todo.content);
     const [isEditingActive, setIsEditingActive] = useState(false);
 
     useEffect(() => {
         if (isEditingActive) {
-            setDraftContent(data.todo.content);
+            setDraftContent(todo.content);
         }
-    }, [isEditingActive, data, setDraftContent]);
+    }, [isEditingActive, todo, setDraftContent]);
 
     const handleConfirmationClick = () => {
-        const todo = data.todo;
         todo.content = draftContent;
         updateTodo(todo);
         setIsEditingActive(false);
     };
 
+    const actionsFragment = useMemo(() => {
+        const editButton = (
+            <span onClick={() => setIsEditingActive(!isEditingActive)}>E</span>
+        );
+        const deleteButton = (
+            <span onClick={() => deleteTodo(todo)}>X</span>
+        );
+        const markAsDoneButton = (
+            <span onClick={() => markTodoAsDone(todo)}>M</span>
+        );
+        const withActionsWrapper = (element: ReactElement) => (
+            <div className={css['actions']}>{element}</div>
+        );
+
+        if (todo.isDone()) {
+            return withActionsWrapper(<>{deleteButton}</>);
+        }
+
+        return withActionsWrapper(
+            <>
+                {markAsDoneButton}
+                {editButton}
+                {deleteButton}
+            </>,
+        );
+    }, []);
+
     return (
         <div className={css['node']}>
             {!isEditingActive ? (
-                <p>{data.todo.content}</p>
+                <p
+                    className={classNames(css['content'], {
+                        [css['content-todoDone']]: todo.isDone(),
+                    })}
+                >
+                    {todo.content}
+                </p>
             ) : (
                 <div className={css['editingArea']}>
                     <textarea
                         onChange={(e) => setDraftContent(e.target.value)}
                         value={draftContent}
                     />
-                    <button onClick={handleConfirmationClick}>Confirm</button>
+                    <button onClick={handleConfirmationClick}>Save</button>
                 </div>
             )}
-            <div className={css['actions']}>
-                <span onClick={() => setIsEditingActive(!isEditingActive)}>
-                    E
-                </span>
-                <span onClick={() => deleteTodo(data.todo)}>X</span>
-            </div>
+            {actionsFragment}
         </div>
     );
 };

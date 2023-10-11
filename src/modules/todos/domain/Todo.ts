@@ -32,6 +32,8 @@ export default abstract class Todo implements TodoDTO {
     abstract delete: () => Promise<void>;
 
     abstract markAsDone: () => Promise<Todo>;
+
+    isDone = () => this.state === TodoState.FINISHED;
 }
 
 export interface TodoFactory {

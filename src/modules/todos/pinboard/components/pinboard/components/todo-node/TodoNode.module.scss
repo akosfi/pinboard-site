@@ -8,12 +8,18 @@
     position: relative;
     height: 220px;
     width: 200px;
-    font-size: 16px;
+    font-size: 18px;
 
     .actions {
         position: absolute;
         top: 8px;
         right: 8px;
+    }
+
+    .content {
+        &-todoDone {
+            text-decoration: line-through;
+        }
     }
 
     .editingArea {
@@ -22,10 +28,18 @@
         height: 100%;
         gap: 4px;
 
+        textarea,
+        button {
+            background: #fff9c4;
+            font-size: 18px;
+            border: 2px solid #e5e5e5;
+            padding: 4px 8px;
+            border-radius: 4px;
+        }
+
         textarea {
             height: 100%;
-            background: #fff9c4;
-            font-size: 16px;
         }
+
     }
 }

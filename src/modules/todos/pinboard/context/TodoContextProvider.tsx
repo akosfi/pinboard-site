@@ -14,6 +14,7 @@ import GetAllTodosUseCase from '../useCases/GetAllTodosUseCase';
 import DeleteTodoUseCase from '../useCases/DeleteTodoUseCase';
 import UpdateTodoUseCase from '../useCases/UpdateTodoUseCase';
 import CreateTodoUseCase from '../useCases/CreateTodoUseCase';
+import MarkTodoAsDoneUseCase from '../useCases/MarkTodoAsDoneUseCase';
 
 type TodoContextProviderProps = {
     children: ReactElement | ReactElement[];
@@ -85,6 +86,28 @@ const TodoContextProvider: FC<TodoContextProviderProps> = ({ children }) => {
         [setTodos],
     );
 
+    const markTodoAsDone = useCallback(
+        async (todo: Todo) => {
+            try {
+                const { todo: todoMarkedAsDone } =
+                    await new MarkTodoAsDoneUseCase({
+                        todo,
+                    }).execute();
+
+                const todoIndex = todos.findIndex(({ id }) => id === todo.id);
+
+                setTodos([
+                    ...todos.slice(0, todoIndex),
+                    todoMarkedAsDone,
+                    ...todos.slice(todoIndex + 1),
+                ]);
+            } catch (error) {
+                //TODO: handle this
+            }
+        },
+        [setTodos],
+    );
+
     const nodes = useMemo(
         () =>
             todos.map((todo) => ({
@@ -101,7 +124,14 @@ const TodoContextProvider: FC<TodoContextProviderProps> = ({ children }) => {
 
     return (
         <todoContext.Provider
-            value={{ todos, nodes, deleteTodo, updateTodo, createTodo }}
+            value={{
+                todos,
+                nodes,
+                deleteTodo,
+                updateTodo,
+                createTodo,
+                markTodoAsDone,
+            }}
         >
             {children}
         </todoContext.Provider>
