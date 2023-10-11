@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useMemo, MouseEvent, memo } from 'react';
+import React, { FC, useEffect, useMemo, MouseEvent } from 'react';
 import ReactFlow, {
     MiniMap,
     Controls,
@@ -9,20 +9,46 @@ import ReactFlow, {
 } from 'reactflow';
 
 import TodoNode from './components/todo-node/TodoNode';
-import TodoContextProvider from '../../context/TodoContextProvider';
-import useTodoContext from '../../context/useTodoContext';
 import Todo from 'modules/todos/domain/Todo';
 import CreateTodoInput from './components/create-todo-input/CreateTodoInput';
 import ErrorAlert from './components/error-alert/ErrorAlert';
 import 'reactflow/dist/style.css';
 import css from './Pinboard.module.scss';
 import { RemoteTodoFactory } from 'modules/todos/remote/RemoteTodo';
+import { useDispatch, useSelector } from 'react-redux';
+import pinboardSelectors from '../../redux/selectors';
+import { AppDispatch } from 'redux/store';
+import getAllTodosThunk from '../../redux/thunks/getAllTodosThunk';
+import updateTodoThunk from '../../redux/thunks/updateTodoThunk';
 
 const Pinboard: FC = () => {
     const [localNodeState, setLocalNodeState, onLocalNodeStateChange] =
         useNodesState([]);
 
-    const { nodes, updateTodo } = useTodoContext();
+    const isUserActionInProgress = useSelector(
+        pinboardSelectors.getIsUserActionInProgress,
+    );
+    const dispatch = useDispatch<AppDispatch>();
+
+    useEffect(() => {
+        dispatch(getAllTodosThunk());
+    }, [dispatch]);
+
+    useEffect(() => {
+        let interval: NodeJS.Timeout | null = null;
+
+        if (!isUserActionInProgress) {
+            interval = setInterval(() => dispatch(getAllTodosThunk()), 5000);
+        }
+
+        return () => {
+            if (interval !== null) {
+                clearInterval(interval);
+            }
+        };
+    }, [dispatch, isUserActionInProgress]);
+
+    const nodes = useSelector(pinboardSelectors.getNodes);
 
     useEffect(() => {
         setLocalNodeState(nodes);
@@ -48,7 +74,7 @@ const Pinboard: FC = () => {
                 position: { x: node.position.x, y: node.position.y },
             },
         });
-        updateTodo(todoToUpdate);
+        dispatch(updateTodoThunk({ todo: todoToUpdate }));
     };
 
     const nodeTypes = useMemo(() => ({ todoNode: TodoNode }), []);
@@ -75,12 +101,4 @@ const Pinboard: FC = () => {
     );
 };
 
-const MemoizedPinboard = memo(Pinboard);
-
-const PinboardWithContext = () => (
-    <TodoContextProvider>
-        <MemoizedPinboard />
-    </TodoContextProvider>
-);
-
-export default PinboardWithContext;
+export default Pinboard;

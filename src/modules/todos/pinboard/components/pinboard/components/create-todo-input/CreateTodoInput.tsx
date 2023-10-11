@@ -1,20 +1,20 @@
 import { FC, useState } from 'react';
-
-import useTodoContext from 'modules/todos/pinboard/context/useTodoContext';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from 'redux/store';
+import createTodoThunk from 'modules/todos/pinboard/redux/thunks/createTodoThunk';
 
 import css from './CreateTodoInput.module.scss';
 
 const CreateTodoInput: FC = () => {
     const [newTodoContent, setNewTodoContent] = useState('');
-
-    const { createTodo } = useTodoContext();
+    const dispatch = useDispatch<AppDispatch>();
 
     const handleSubmit = () => {
         if (!newTodoContent) {
             return;
         }
 
-        createTodo(newTodoContent);
+        dispatch(createTodoThunk({ newTodoContent }));
         setNewTodoContent('');
     };
 

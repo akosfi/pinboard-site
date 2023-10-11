@@ -1,12 +1,12 @@
 import { FC, useEffect, useState } from 'react';
-
-import useTodoContext from 'modules/todos/pinboard/context/useTodoContext';
+import { useSelector } from 'react-redux';
+import pinboardSelectors from 'modules/todos/pinboard/redux/selectors';
 
 import css from './ErrorAlert.module.scss';
 
 const ErrorAlert: FC = () => {
-    const { errors } = useTodoContext();
     const [errorBeingShown, setErrorBeingShown] = useState<string | null>(null);
+    const errors = useSelector(pinboardSelectors.getErrors);
 
     useEffect(() => {
         if (errorBeingShown !== null || !errors.length) {

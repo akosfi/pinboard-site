@@ -1,10 +1,14 @@
 import { FC, ReactElement, useEffect, useMemo, useState } from 'react';
 import classNames from 'classnames';
 import { Todo } from 'modules/todos';
-import useTodoContext from 'modules/todos/pinboard/context/useTodoContext';
 
 import css from './TodoNode.module.scss';
 import { RemoteTodoFactory } from 'modules/todos/remote/RemoteTodo';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from 'redux/store';
+import deleteTodoThunk from 'modules/todos/pinboard/redux/thunks/deleteTodoThunk';
+import updateTodoThunk from 'modules/todos/pinboard/redux/thunks/updateTodoThunk';
+import markTodoAsDoneThunk from 'modules/todos/pinboard/redux/thunks/markTodoAsDoneThunk';
 
 type TodoNodeProps = {
     data: {
@@ -13,9 +17,9 @@ type TodoNodeProps = {
 };
 
 const TodoNode: FC<TodoNodeProps> = ({ data: { todo } }) => {
-    const { deleteTodo, updateTodo, markTodoAsDone } = useTodoContext();
     const [draftContent, setDraftContent] = useState(todo.content);
     const [isEditingActive, setIsEditingActive] = useState(false);
+    const dispatch = useDispatch<AppDispatch>();
 
     useEffect(() => {
         if (isEditingActive) {
@@ -28,7 +32,7 @@ const TodoNode: FC<TodoNodeProps> = ({ data: { todo } }) => {
             ...todo.serialize(),
             content: draftContent,
         });
-        updateTodo(todoToUpdate);
+        dispatch(updateTodoThunk({ todo: todoToUpdate }));
         setIsEditingActive(false);
     };
 
@@ -42,14 +46,14 @@ const TodoNode: FC<TodoNodeProps> = ({ data: { todo } }) => {
         const deleteButton = (
             <img
                 src="/assets/trash_icon.svg"
-                onClick={() => deleteTodo(todo)}
+                onClick={() => dispatch(deleteTodoThunk({ todo }))}
             />
         );
 
         const markAsDoneButton = (
             <img
                 src="/assets/check_icon.svg"
-                onClick={() => markTodoAsDone(todo)}
+                onClick={() => dispatch(markTodoAsDoneThunk({ todo }))}
             />
         );
         const withActionsWrapper = (element: ReactElement) => (
@@ -67,7 +71,7 @@ const TodoNode: FC<TodoNodeProps> = ({ data: { todo } }) => {
                 {deleteButton}
             </>,
         );
-    }, [deleteTodo, isEditingActive, markTodoAsDone, todo]);
+    }, [isEditingActive, dispatch, todo]);
 
     return (
         <div className={css['node']}>
