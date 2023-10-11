@@ -9,13 +9,14 @@ import {
 import classNames from 'classnames';
 import { Todo } from 'modules/todos';
 
-import css from './TodoNode.module.scss';
-import { RemoteTodoFactory } from 'modules/todos/remote/RemoteTodo';
+import { RemoteTodoFactory } from 'modules/todos';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from 'redux/store';
 import deleteTodoThunk from 'modules/todos/pinboard/redux/thunks/deleteTodoThunk';
 import updateTodoThunk from 'modules/todos/pinboard/redux/thunks/updateTodoThunk';
 import markTodoAsDoneThunk from 'modules/todos/pinboard/redux/thunks/markTodoAsDoneThunk';
+
+import css from './TodoNode.module.scss';
 
 type TodoNodeProps = {
     data: {

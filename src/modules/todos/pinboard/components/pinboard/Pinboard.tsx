@@ -9,17 +9,17 @@ import ReactFlow, {
 } from 'reactflow';
 
 import TodoNode from './components/todo-node/TodoNode';
-import Todo from 'modules/todos/domain/Todo';
 import CreateTodoInput from './components/create-todo-input/CreateTodoInput';
 import ErrorAlert from './components/error-alert/ErrorAlert';
-import 'reactflow/dist/style.css';
-import css from './Pinboard.module.scss';
-import { RemoteTodoFactory } from 'modules/todos/remote/RemoteTodo';
+import { RemoteTodoFactory, Todo } from 'modules/todos';
 import { useDispatch, useSelector } from 'react-redux';
 import pinboardSelectors from '../../redux/selectors';
 import { AppDispatch } from 'redux/store';
 import getAllTodosThunk from '../../redux/thunks/getAllTodosThunk';
 import updateTodoThunk from '../../redux/thunks/updateTodoThunk';
+
+import 'reactflow/dist/style.css';
+import css from './Pinboard.module.scss';
 
 const Pinboard: FC = () => {
     const [localNodeState, setLocalNodeState, onLocalNodeStateChange] =
