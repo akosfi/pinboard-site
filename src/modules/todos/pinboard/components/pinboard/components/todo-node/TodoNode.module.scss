@@ -3,7 +3,7 @@
     -moz-box-shadow: 5px 5px 10px 0px rgba(199, 199, 199, 1);
     box-shadow: 5px 5px 10px 0px rgba(199, 199, 199, 1);
 
-    padding: 24px 16px;
+    padding: 40px 16px;
     background: #fff9c4;
     position: relative;
     height: 220px;
@@ -14,6 +14,8 @@
         position: absolute;
         top: 8px;
         right: 8px;
+        display: flex;
+        gap: 8px;
     }
 
     .content {
@@ -40,6 +42,5 @@
         textarea {
             height: 100%;
         }
-
     }
 }

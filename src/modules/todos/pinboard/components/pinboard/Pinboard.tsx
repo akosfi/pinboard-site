@@ -68,7 +68,6 @@ const Pinboard: FC = () => {
     );
 };
 
-
 const MemoizedPinboard = memo(Pinboard);
 
 const PinboardWithContext = () => (

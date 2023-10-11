@@ -36,6 +36,21 @@ const TodoContextProvider: FC<TodoContextProviderProps> = ({ children }) => {
         })();
     }, [setTodos]);
 
+    const refreshTodoInList = useCallback(
+        (todo: Todo) => {
+            const todoToRefreshIndex = todos.findIndex(
+                ({ id }) => id === todo.id,
+            );
+
+            setTodos([
+                ...todos.slice(0, todoToRefreshIndex),
+                todo,
+                ...todos.slice(todoToRefreshIndex + 1),
+            ]);
+        },
+        [todos, setTodos],
+    );
+
     const deleteTodo = useCallback(
         async (todoToDelete: Todo) => {
             try {
@@ -56,19 +71,12 @@ const TodoContextProvider: FC<TodoContextProviderProps> = ({ children }) => {
                 const { todo } = await new UpdateTodoUseCase({
                     todo: todoToUpdate,
                 }).execute();
-
-                const todoIndex = todos.findIndex(({ id }) => id === todo.id);
-
-                setTodos([
-                    ...todos.slice(0, todoIndex),
-                    todo,
-                    ...todos.slice(todoIndex + 1),
-                ]);
+                refreshTodoInList(todo);
             } catch (error) {
                 //TODO: handle this
             }
         },
-        [todos, setTodos],
+        [refreshTodoInList],
     );
 
     const createTodo = useCallback(
@@ -94,18 +102,12 @@ const TodoContextProvider: FC<TodoContextProviderProps> = ({ children }) => {
                         todo,
                     }).execute();
 
-                const todoIndex = todos.findIndex(({ id }) => id === todo.id);
-
-                setTodos([
-                    ...todos.slice(0, todoIndex),
-                    todoMarkedAsDone,
-                    ...todos.slice(todoIndex + 1),
-                ]);
+                refreshTodoInList(todoMarkedAsDone);
             } catch (error) {
                 //TODO: handle this
             }
         },
-        [setTodos, todos],
+        [refreshTodoInList],
     );
 
     const nodes = useMemo(

@@ -30,13 +30,24 @@ const TodoNode: FC<TodoNodeProps> = ({ data: { todo } }) => {
 
     const actionsFragment = useMemo(() => {
         const editButton = (
-            <span onClick={() => setIsEditingActive(!isEditingActive)}>E</span>
+            <img
+                src="/assets/edit_icon.svg"
+                onClick={() => setIsEditingActive(!isEditingActive)}
+            />
         );
         const deleteButton = (
-            <span onClick={() => deleteTodo(todo)}>X</span>
+            <img
+                src="/assets/trash_icon.svg"
+                onClick={() => deleteTodo(todo)}
+            />
         );
+
+        //TODO: check mark as done functionaly. Bug updateing todo.
         const markAsDoneButton = (
-            <span onClick={() => markTodoAsDone(todo)}>M</span>
+            <img
+                src="/assets/check_icon.svg"
+                onClick={() => markTodoAsDone(todo)}
+            />
         );
         const withActionsWrapper = (element: ReactElement) => (
             <div className={css['actions']}>{element}</div>
@@ -53,7 +64,7 @@ const TodoNode: FC<TodoNodeProps> = ({ data: { todo } }) => {
                 {deleteButton}
             </>,
         );
-    }, []);
+    }, [deleteTodo, isEditingActive, markTodoAsDone, todo]);
 
     return (
         <div className={css['node']}>
