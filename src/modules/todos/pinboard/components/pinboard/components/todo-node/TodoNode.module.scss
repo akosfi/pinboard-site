@@ -9,6 +9,8 @@
     height: 220px;
     width: 200px;
     font-size: 18px;
+    overflow-x: hidden;
+    overflow-y: auto;
 
     .actions {
         position: absolute;

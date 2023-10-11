@@ -1,7 +1,6 @@
 import { Todo, TodoDTO } from 'modules/todos';
 import UpdateTodoUseCase from '../../useCases/UpdateTodoUseCase';
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { RemoteTodoFactory } from 'modules/todos/remote/RemoteTodo';
 
 const updateTodoThunk = createAsyncThunk<
     { todo: TodoDTO },
@@ -13,7 +12,7 @@ const updateTodoThunk = createAsyncThunk<
             todo,
         }).execute();
 
-        return { todo: new RemoteTodoFactory().from(updatedTodo) };
+        return { todo: updatedTodo.serialize() };
     } catch (error) {
         return thunkAPI.rejectWithValue('Failed to update todo.');
     }

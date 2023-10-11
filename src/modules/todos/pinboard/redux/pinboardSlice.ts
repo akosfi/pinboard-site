@@ -29,6 +29,12 @@ export const pinboardSlice = createSlice({
         ) => {
             state.errors = [...state.errors, error];
         },
+        setErrors: (
+            state,
+            { payload: { errors } }: PayloadAction<{ errors: string[] }>,
+        ) => {
+            state.errors = errors;
+        },
     },
     extraReducers: (builder) => {
         builder.addCase(
@@ -124,6 +130,6 @@ export const pinboardSlice = createSlice({
     },
 });
 
-// export const { increment, decrement, incrementByAmount } = counterSlice.actions
+export const { actions: pinboardSliceActions } = pinboardSlice;
 
 export default pinboardSlice.reducer;

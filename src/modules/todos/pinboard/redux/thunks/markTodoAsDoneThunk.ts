@@ -13,7 +13,7 @@ const markTodoAsDoneThunk = createAsyncThunk<
             todo,
         }).execute();
 
-        return { todo: new RemoteTodoFactory().from(doneTodo) };
+        return { todo: doneTodo.serialize() };
     } catch (error) {
         return thunkAPI.rejectWithValue('Failed to mark todo as done.');
     }
